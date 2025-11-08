@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brändipersoonallisuustesti</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: #000000;
+            min-height: 100vh;
+            padding: 2rem;
+            transition: all 0.5s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #0a0a0a;
+            border-radius: 0;
+            padding: 3rem;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            transition: all 0.5s ease;
+            border: 2px solid #00ff00;
+        }
+
+        h1 {
+            color: #00ff00;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            transition: all 0.5s ease;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            letter-spacing: 0.1em;
+        }
+
+        h1::before {
+            content: '> ';
+        }
+
+        h1::after {
+            content: ' <';
+        }
+
+        .intro {
+            color: #00cc00;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            transition: all 0.5s ease;
+            letter-spacing: 0.05em;
+        }
+
+        .intro::before {
+            content: '// ';
+            color: #00ff00;
+        }
+
+        .question {
+            margin-bottom: 3rem;
+        }
+
+        .question-title {
+            font-size: 1.2rem;
+            color: #00ff00;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            transition: all 0.5s ease;
+            letter-spacing: 0.08em;
+        }
+
+        .question-title::before {
+            content: '[ ';
+        }
+
+        .question-title::after {
+            content: ' ]';
+        }
+
+        .slider-container {
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .slider-labels span:first-child {
+            color: #00ff00;
+            font-weight: 600;
+        }
+
+        .slider-labels span:last-child {
+            color: #00ff00;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 0;
+            background: linear-gradient(to right, #00ff00 0%, #00cc00 100%);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 0;
+            background: #00ff00;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+            border: 2px solid #000000;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 0;
+            background: #00ff00;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+            border: 2px solid #000000;
+        }
+
+        .value-indicator {
+            text-align: center;
+            margin-top: 0.5rem;
+            color: #00cc00;
+            font-size: 0.9rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .results {
+            display: none;
+            margin-top: 3rem;
+        }
+
+        .results h2 {
+            color: #00ff00;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .result-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #00ff00;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            color: #00cc00;
+            font-size: 1.1rem;
+        }
+
+        .result-bar {
+            height: 30px;
+            background: linear-gradient(to right, #00ff00 0%, #00cc00 100%);
+            border-radius: 0;
+            margin-top: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .result-bar::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .summary {
+            background: #000000;
+            padding: 2rem;
+            border-radius: 0;
+            margin-top: 2rem;
+            border-left: 4px solid #00ff00;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .summary h3 {
+            color: #00ff00;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .summary h3::before {
+            content: ':: ';
+        }
+
+        .summary p {
+            color: #00cc00;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .summary .section {
+            margin-bottom: 1.5rem;
+        }
+
+        .summary .section-title {
+            font-weight: 600;
+            color: #00ff00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .summary .section-title::before {
+            content: '> ';
+        }
+
+        .preview-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: #0a0a0a;
+            border-radius: 0;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .preview-section h2 {
+            color: #00ff00;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .preview-section h2::before {
+            content: '[ ';
+        }
+
+        .preview-section h2::after {
+            content: ' ]';
+        }
+
+        .preview-description {
+            color: #00cc00;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .preview-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+            min-height: 400px;
+        }
+
+        .preview-header {
+            margin-bottom: 2rem;
+            transition: all 0.5s ease;
+        }
+
+        .preview-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.5s ease;
+        }
+
+        .preview-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            transition: all 0.5s ease;
+        }
+
+        .preview-content {
+            margin-bottom: 2rem;
+        }
+
+        .preview-card {
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e2e8f0;
+            transition: all 0.5s ease;
+        }
+
+        .preview-card-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            transition: all 0.5s ease;
+        }
+
+        .preview-card-text {
+            line-height: 1.6;
+            transition: all 0.5s ease;
+        }
+
+        .preview-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .preview-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .recommendations {
+            background: #000000;
+            padding: 1.5rem;
+            border-radius: 0;
+            margin-top: 1.5rem;
+            border: 1px solid #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+        }
+
+        .recommendations h4 {
+            color: #00ff00;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .recommendations h4::before {
+            content: '// ';
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .recommendations li {
+            padding: 0.5rem 0;
+            color: #00cc00;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .recommendations li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: #00ff00;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Brändipersoonallisuustesti</h1>
+        <p class="intro">
+            Liikuta liukusäätimiä määrittääksesi brändisi persoonallisuus. 
+            Vastaa intuitiivisesti - ensimmäinen tunne on usein oikea!
+        </p>
+
+        <form id="brandForm">
+            <div class="question">
+                <div class="question-title">1. Visuaalinen lämpötila</div>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span>Kylmä</span>
+                        <span>Lämmin</span>
+                    </div>
+                    <input type="range" id="temperature" min="1" max="7" value="4">
+                    <div class="value-indicator" id="temp-value">Neutraali</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">2. Muotojen kovuus</div>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span>Pehmeä</span>
+                        <span>Kova</span>
+                    </div>
+                    <input type="range" id="softness" min="1" max="7" value="4">
+                    <div class="value-indicator" id="soft-value">Tasapainoinen</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">3. Muotojen terävyys</div>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span>Pyöreä</span>
+                        <span>Terävä</span>
+                    </div>
+                    <input type="range" id="sharpness" min="1" max="7" value="4">
+                    <div class="value-indicator" id="sharp-value">Kohtalainen</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">4. Aikakaudellinen tyyli</div>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span>Klassinen</span>
+                        <span>Moderni</span>
+                    </div>
+                    <input type="range" id="style" min="1" max="7" value="4">
+                    <div class="value-indicator" id="style-value">Ajaton</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">5. Tunnelman vakavuus</div>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span>Leikkisä</span>
+                        <span>Vakava</span>
+                    </div>
+                    <input type="range" id="tone" min="1" max="7" value="4">
+                    <div class="value-indicator" id="tone-value">Ammattimainen</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">6. Energiataso</div>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span>Rauhallinen</span>
+                        <span>Dynaaminen</span>
+                    </div>
+                    <input type="range" id="energy" min="1" max="7" value="4">
+                    <div class="value-indicator" id="energy-value">Tasapainoinen</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">7. Lähestyttävyys</div>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span>Helposti lähestyttävä</span>
+                        <span>Eksklusiivinen</span>
+                    </div>
+                    <input type="range" id="approachability" min="1" max="7" value="4">
+                    <div class="value-indicator" id="approach-value">Saavutettava</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">8. Visuaalinen monimutkaisuus</div>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span>Minimalistinen</span>
+                        <span>Yksityiskohtainen</span>
+                    </div>
+                    <input type="range" id="complexity" min="1" max="7" value="4">
+                    <div class="value-indicator" id="complex-value">Selkeä</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">9. Värien rohkeus</div>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span>Hillitty</span>
+                        <span>Rohkea</span>
+                    </div>
+                    <input type="range" id="colors" min="1" max="7" value="4">
+                    <div class="value-indicator" id="colors-value">Maltillinen</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">10. Viestinnän sävy</div>
+                <div class="slider-container">
+                    <div class="slider-labels">
+                        <span>Rento</span>
+                        <span>Muodollinen</span>
+                    </div>
+                    <input type="range" id="communication" min="1" max="7" value="4">
+                    <div class="value-indicator" id="comm-value">Ystävällinen</div>
+                </div>
+            </div>
+        </form>
+
+        <div class="results" id="results">
+            <h2>📊 Brändisi persoonallisuus</h2>
+            <div id="resultsContent"></div>
+            <div class="summary">
+                <h3>Yhteenveto</h3>
+                <p id="summaryText"></p>
+            </div>
+
+            <div class="preview-section">
+                <h2>👁️ Esikatselu</h2>
+                <p class="preview-description">Alla näet esimerkin siitä, miltä brändisi visuaalinen ilme voisi näyttää valintojesi perusteella:</p>
+                
+                <div class="preview-container" id="previewContainer">
+                    <div class="preview-header">
+                        <div class="preview-title" id="previewTitle">Valovirta Design</div>
+                        <div class="preview-subtitle" id="previewSubtitle">Luomme digitaalisia kokemuksia, jotka inspiroivat</div>
+                    </div>
+                    
+                    <div class="preview-content">
+                        <div class="preview-card" id="previewCard1">
+                            <div class="preview-card-title" id="previewCardTitle1">Verkkosivut</div>
+                            <div class="preview-card-text" id="previewCardText1">Suunnittelemme ja toteutamme modernit verkkosivut, jotka heijastavat yrityksesi ainutlaatuista identiteettiä.</div>
+                        </div>
+                        
+                        <div class="preview-card" id="previewCard2">
+                            <div class="preview-card-title" id="previewCardTitle2">Brändi-identiteetti</div>
+                            <div class="preview-card-text" id="previewCardText2">Rakennamme vahvan visuaalisen ilmeen, joka erottaa sinut kilpailijoista ja jää asiakkaiden mieleen.</div>
+                        </div>
+                    </div>
+                    
+                    <button class="preview-button" id="previewButton">Aloita projekti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = {
+            temperature: {
+                labels: ['Arktinen', 'Viileä', 'Raikas', 'Neutraali', 'Lämmin', 'Lämminhenkinen', 'Tulinen'],
+                left: 'Kylmä',
+                right: 'Lämmin'
+            },
+            softness: {
+                labels: ['Erittäin pehmeä', 'Pehmeä', 'Melko pehmeä', 'Tasapainoinen', 'Melko kova', 'Kova', 'Erittäin kova'],
+                left: 'Pehmeä',
+                right: 'Kova'
+            },
+            sharpness: {
+                labels: ['Pyöreä', 'Pehmeäkulmainen', 'Lievästi kulmikas', 'Kohtalainen', 'Kulmikas', 'Terävä', 'Erittäin terävä'],
+                left: 'Pyöreä',
+                right: 'Terävä'
+            },
+            style: {
+                labels: ['Klassinen', 'Perinteinen', 'Ajaton', 'Ajaton', 'Nykyaikainen', 'Moderni', 'Futuristinen'],
+                left: 'Klassinen',
+                right: 'Moderni'
+            },
+            tone: {
+                labels: ['Leikkisä', 'Iloinen', 'Kevyt', 'Ammattimainen', 'Asiallinen', 'Vakava', 'Erittäin vakava'],
+                left: 'Leikkisä',
+                right: 'Vakava'
+            },
+            energy: {
+                labels: ['Rauhallinen', 'Tyyni', 'Harmoninen', 'Tasapainoinen', 'Eloisa', 'Energinen', 'Dynaaminen'],
+                left: 'Rauhallinen',
+                right: 'Dynaaminen'
+            },
+            approachability: {
+                labels: ['Avoin', 'Helposti lähestyttävä', 'Ystävällinen', 'Saavutettava', 'Valikoiva', 'Premium', 'Eksklusiivinen'],
+                left: 'Helposti lähestyttävä',
+                right: 'Eksklusiivinen'
+            },
+            complexity: {
+                labels: ['Minimalistinen', 'Yksinkertainen', 'Pelkistetty', 'Selkeä', 'Monipuolinen', 'Yksityiskohtainen', 'Runsas'],
+                left: 'Minimalistinen',
+                right: 'Yksityiskohtainen'
+            },
+            colors: {
+                labels: ['Hillitty', 'Neutraali', 'Harmoninen', 'Maltillinen', 'Eloisa', 'Rohkea', 'Voimakas'],
+                left: 'Hillitty',
+                right: 'Rohkea'
+            },
+            communication: {
+                labels: ['Rento', 'Leppoisa', 'Ystävällinen', 'Ystävällinen', 'Kohtelias', 'Asiallinen', 'Muodollinen'],
+                left: 'Rento',
+                right: 'Muodollinen'
+            }
+        };
+
+        // Update slider value displays and results in real-time
+        Object.keys(questions).forEach(key => {
+            const slider = document.getElementById(key);
+            const valueDisplay = document.getElementById(key === 'temperature' ? 'temp-value' : 
+                                                       key === 'softness' ? 'soft-value' :
+                                                       key === 'sharpness' ? 'sharp-value' :
+                                                       key === 'style' ? 'style-value' :
+                                                       key === 'tone' ? 'tone-value' :
+                                                       key === 'energy' ? 'energy-value' :
+                                                       key === 'approachability' ? 'approach-value' :
+                                                       key === 'complexity' ? 'complex-value' :
+                                                       key === 'colors' ? 'colors-value' : 'comm-value');
+            
+            slider.addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                valueDisplay.textContent = questions[key].labels[value - 1];
+                
+                // Update results in real-time
+                updateResults();
+            });
+        });
+
+        function updateResults() {
+            const results = {};
+            Object.keys(questions).forEach(key => {
+                const value = parseInt(document.getElementById(key).value);
+                results[key] = {
+                    value: value,
+                    label: questions[key].labels[value - 1],
+                    left: questions[key].left,
+                    right: questions[key].right
+                };
+            });
+            displayResults(results);
+            applyBrandStyle(results);
+        }
+
+        function applyBrandStyle(results) {
+            // Get preview elements
+            const previewContainer = document.getElementById('previewContainer');
+            const previewTitle = document.getElementById('previewTitle');
+            const previewSubtitle = document.getElementById('previewSubtitle');
+            const previewCards = document.querySelectorAll('.preview-card');
+            const previewCardTitles = document.querySelectorAll('.preview-card-title');
+            const previewCardTexts = document.querySelectorAll('.preview-card-text');
+            const previewButton = document.getElementById('previewButton');
+            
+            // Temperature -> Colors
+            let primaryColor, secondaryColor, bgGradient;
+            if (results.temperature.value <= 2) {
+                // Cold - blues and grays
+                primaryColor = '#2c5f7d';
+                secondaryColor = '#4a90b8';
+                bgGradient = 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)';
+            } else if (results.temperature.value <= 4) {
+                // Neutral - grays
+                primaryColor = '#4a5568';
+                secondaryColor = '#718096';
+                bgGradient = 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)';
+            } else if (results.temperature.value <= 6) {
+                // Warm - oranges
+                primaryColor = '#c05621';
+                secondaryColor = '#dd6b20';
+                bgGradient = 'linear-gradient(135deg, #fed7aa 0%, #fdba74 100%)';
+            } else {
+                // Hot - reds
+                primaryColor = '#c53030';
+                secondaryColor = '#e53e3e';
+                bgGradient = 'linear-gradient(135deg, #fecaca 0%, #fca5a5 100%)';
+            }
+
+            // Style -> Font family
+            let fontFamily;
+            if (results.style.value <= 3) {
+                fontFamily = 'Georgia, "Times New Roman", Times, serif';
+            } else if (results.style.value >= 5) {
+                fontFamily = '"Helvetica Neue", Helvetica, Arial, sans-serif';
+            } else {
+                fontFamily = '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif';
+            }
+
+            // Sharpness -> Border radius
+            let borderRadius, cardRadius, buttonRadius;
+            if (results.sharpness.value <= 3) {
+                borderRadius = '30px';
+                cardRadius = '20px';
+                buttonRadius = '25px';
+            } else if (results.sharpness.value >= 5) {
+                borderRadius = '0px';
+                cardRadius = '0px';
+                buttonRadius = '0px';
+            } else {
+                borderRadius = '15px';
+                cardRadius = '10px';
+                buttonRadius = '8px';
+            }
+
+            // Complexity -> Padding and spacing
+            let padding, cardPadding;
+            if (results.complexity.value <= 3) {
+                padding = '4rem';
+                cardPadding = '2rem';
+            } else if (results.complexity.value >= 5) {
+                padding = '2rem';
+                cardPadding = '1rem';
+            } else {
+                padding = '3rem';
+                cardPadding = '1.5rem';
+            }
+
+            // Energy -> Animation speed
+            let animationSpeed;
+            if (results.energy.value <= 3) {
+                animationSpeed = '1s';
+            } else if (results.energy.value >= 5) {
+                animationSpeed = '0.2s';
+            } else {
+                animationSpeed = '0.5s';
+            }
+
+            // Colors boldness affects text colors
+            let headingColor, textColor, buttonBg;
+            if (results.colors.value <= 3) {
+                // Muted - grays
+                headingColor = '#4a5568';
+                textColor = '#718096';
+                buttonBg = '#718096';
+            } else if (results.colors.value >= 5) {
+                // Bold - brand colors
+                headingColor = primaryColor;
+                textColor = secondaryColor;
+                buttonBg = primaryColor;
+            } else {
+                // Moderate - still grays
+                headingColor = '#2d3748';
+                textColor = '#4a5568';
+                buttonBg = '#667eea';
+            }
+
+            // Tone -> Text weight and content style
+            let titleWeight, subtitleWeight;
+            let companyName, tagline, service1Title, service1Desc, service2Title, service2Desc, buttonText;
+            
+            // Combine tone (playful/serious) with communication (casual/formal)
+            const isPlayful = results.tone.value <= 3;
+            const isSerious = results.tone.value >= 5;
+            const isCasual = results.communication.value <= 3;
+            const isFormal = results.communication.value >= 5;
+            
+            if (isPlayful || isCasual) {
+                // Playful and/or casual
+                titleWeight = '600';
+                subtitleWeight = '400';
+                
+                if (isCasual) {
+                    companyName = 'Kipinä Studio 🌟';
+                    tagline = 'Tehdään yhdessä jotain mahtavaa!';
+                    service1Title = 'Nettisivut';
+                    service1Desc = 'Teemme kivoja ja helppokäyttöisiä verkkosivuja, joista sekä sinä että asiakkaasi tykkäävät. Ei mitään turhaa monimutkasuutta!';
+                    service2Title = 'Brändi & somesuunnittelu';
+                    service2Desc = 'Luodaan yhessä brändi, joka herättää hymyn ja jää mieleen. Plus somesisältöä joka toimii!';
+                    buttonText = 'Haloo! Aloitetaan jutut 👋';
+                } else {
+                    companyName = 'Kipinä Studio';
+                    tagline = 'Luovuutta ja energiaa digitaaliseen maailmaan';
+                    service1Title = 'Verkkosivusuunnittelu';
+                    service1Desc = 'Suunnittelemme verkkosivut, jotka ovat sekä kauniita että käytännöllisiä. Asiakkaasi rakastavat niitä!';
+                    service2Title = 'Brändi-identiteetti';
+                    service2Desc = 'Luomme ikimuistoisen brändin, joka erottuu edukseen ja puhuttelee kohdeyleisöäsi.';
+                    buttonText = 'Aloitetaan yhdessä';
+                }
+            } else if (isSerious || isFormal) {
+                // Serious and/or formal
+                titleWeight = '800';
+                subtitleWeight = '600';
+                
+                if (isFormal) {
+                    companyName = 'Nordis Consulting Group';
+                    tagline = 'Strateginen kumppani digitaalisessa transformaatiossa';
+                    service1Title = 'Enterprise-verkkosivuratkaisut';
+                    service1Desc = 'Toteutamme laadukkaat, skaalautuvat ja turvaalliset verkkosivustot, jotka tukevat organisaationne strategisia tavoitteita ja pitkän aikavälin kasvua.';
+                    service2Title = 'Brändistrategia & identiteetti';
+                    service2Desc = 'Kehitämme kokonaisvaltaisen brändi-identiteetin, joka vahvistaa markkinapositiotanne, rakentaa pitkäaikaista kilpailuetua ja luo lisäarvoa sidosryhmille.';
+                    buttonText = 'Varaa strategiakonsultaatio';
+                } else {
+                    companyName = 'Nordis Consulting';
+                    tagline = 'Asiantuntevaa digitaalista suunnittelua';
+                    service1Title = 'Verkkosivuratkaisut';
+                    service1Desc = 'Toteutamme ammattimaiset verkkosivustot, jotka tukevat liiketoimintanne tavoitteita ja kasvua.';
+                    service2Title = 'Brändistrategia';
+                    service2Desc = 'Kehitämme vahvan brändi-identiteetin, joka erottaa teidät kilpailijoista ja vahvistaa markkinapositiotanne.';
+                    buttonText = 'Varaa konsultaatio';
+                }
+            } else {
+                // Professional but friendly (middle ground)
+                titleWeight = '700';
+                subtitleWeight = '500';
+                companyName = 'Valovirta Design';
+                tagline = 'Luomme digitaalisia kokemuksia, jotka inspiroivat';
+                service1Title = 'Verkkosivut';
+                service1Desc = 'Suunnittelemme ja toteutamme modernit verkkosivut, jotka heijastavat yrityksesi ainutlaatuista identiteettiä.';
+                service2Title = 'Brändi-identiteetti';
+                service2Desc = 'Rakennamme vahvan visuaalisen ilmeen, joka erottaa sinut kilpailijoista ja jää asiakkaiden mieleen.';
+                buttonText = 'Aloita projekti';
+            }
+
+            // Apply all styles to preview
+            previewContainer.style.background = bgGradient;
+            previewContainer.style.borderRadius = borderRadius;
+            previewContainer.style.padding = padding;
+            previewContainer.style.transition = `all ${animationSpeed} ease`;
+            previewContainer.style.fontFamily = fontFamily;
+
+            // Update content based on tone
+            previewTitle.textContent = companyName;
+            previewTitle.style.color = headingColor;
+            previewTitle.style.fontWeight = titleWeight;
+            previewTitle.style.fontFamily = fontFamily;
+
+            previewSubtitle.textContent = tagline;
+            previewSubtitle.style.color = textColor;
+            previewSubtitle.style.fontWeight = subtitleWeight;
+            previewSubtitle.style.fontFamily = fontFamily;
+
+            document.getElementById('previewCardTitle1').textContent = service1Title;
+            document.getElementById('previewCardText1').textContent = service1Desc;
+            document.getElementById('previewCardTitle2').textContent = service2Title;
+            document.getElementById('previewCardText2').textContent = service2Desc;
+            previewButton.textContent = buttonText;
+
+            previewCards.forEach(card => {
+                card.style.borderRadius = cardRadius;
+                card.style.padding = cardPadding;
+                card.style.borderColor = results.colors.value >= 5 ? primaryColor : '#e2e8f0';
+                card.style.transition = `all ${animationSpeed} ease`;
+            });
+
+            previewCardTitles.forEach(title => {
+                title.style.color = headingColor;
+                title.style.fontFamily = fontFamily;
+                title.style.fontWeight = titleWeight;
+            });
+
+            previewCardTexts.forEach(text => {
+                text.style.color = textColor;
+                text.style.fontFamily = fontFamily;
+            });
+
+            previewButton.style.background = buttonBg;
+            previewButton.style.borderRadius = buttonRadius;
+            previewButton.style.fontFamily = fontFamily;
+            previewButton.style.fontWeight = titleWeight;
+            previewButton.style.transition = `all ${animationSpeed} ease`;
+        }
+
+        // Show initial results on page load
+        window.addEventListener('load', () => {
+            updateResults();
+        });
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('resultsContent');
+            const summaryDiv = document.getElementById('summaryText');
+            
+            let html = '';
+            const titles = {
+                temperature: 'Visuaalinen lämpötila',
+                softness: 'Muotojen kovuus',
+                sharpness: 'Muotojen terävyys',
+                style: 'Aikakaudellinen tyyli',
+                tone: 'Tunnelman vakavuus',
+                energy: 'Energiataso',
+                approachability: 'Lähestyttävyys',
+                complexity: 'Visuaalinen monimutkaisuus',
+                colors: 'Värien rohkeus',
+                communication: 'Viestinnän sävy'
+            };
+
+            Object.keys(results).forEach(key => {
+                const result = results[key];
+                const percentage = ((result.value - 1) / 6) * 100;
+                
+                html += `
+                    <div class="result-item">
+                        <div class="result-label">${titles[key]}</div>
+                        <div class="result-value">${result.label}</div>
+                        <div class="result-bar" style="width: ${percentage}%"></div>
+                    </div>
+                `;
+            });
+
+            resultsDiv.innerHTML = html;
+
+            // Generate summary
+            const avgValue = Object.values(results).reduce((sum, r) => sum + r.value, 0) / Object.keys(results).length;
+            
+            let summary = 'Brändisi persoonallisuus on ';
+            
+            if (results.temperature.value <= 3) summary += 'viileä ja ';
+            else if (results.temperature.value >= 5) summary += 'lämmin ja ';
+            
+            if (results.tone.value <= 3) summary += 'leikkisä, ';
+            else if (results.tone.value >= 5) summary += 'vakava, ';
+            else summary += 'ammattimainen, ';
+            
+            if (results.style.value <= 3) summary += 'klassinen tyyli. ';
+            else if (results.style.value >= 5) summary += 'moderni tyyli. ';
+            else summary += 'ajaton tyyli. ';
+            
+            summary += 'Visuaalisen ilmeen tulisi olla ';
+            
+            if (results.complexity.value <= 3) summary += 'minimalistinen ja pelkistetty ';
+            else if (results.complexity.value >= 5) summary += 'yksityiskohtainen ja monipuolinen ';
+            else summary += 'selkeä ja tasapainoinen ';
+            
+            if (results.sharpness.value <= 3) summary += 'pyöreillä muodoilla.';
+            else if (results.sharpness.value >= 5) summary += 'terävien kulmien kanssa.';
+            else summary += 'kohtuullisen kulmikkailla muodoilla.';
+
+            summaryDiv.textContent = summary;
+
+            // Generate detailed analysis
+            let detailedAnalysis = '<div class="section">';
+            detailedAnalysis += '<div class="section-title">Visuaalinen identiteetti</div>';
+            detailedAnalysis += '<p>';
+            
+            // Temperature analysis
+            if (results.temperature.value <= 2) {
+                detailedAnalysis += 'Viileä väripaletti (siniset, harmaat, vihreät sävyt) luo ammattimaiseen ja luotettavan vaikutelman. ';
+            } else if (results.temperature.value <= 4) {
+                detailedAnalysis += 'Neutraali väripaletti (harmaat, vaaleat sävyt tasapainoisilla aksenteilla) on monipuolinen ja helposti muokattavissa. ';
+            } else if (results.temperature.value <= 6) {
+                detailedAnalysis += 'Lämmin väripaletti (oranssit, keltaiset, punaiset sävyt) luo kutsuvaan ja energisen tunnelman. ';
+            } else {
+                detailedAnalysis += 'Erittäin lämmin ja intensiivinen värimaailma luo vahvan emotionaalisen yhteyden ja erottuu joukosta. ';
+            }
+
+            // Shape analysis
+            if (results.sharpness.value <= 3 && results.softness.value <= 3) {
+                detailedAnalysis += 'Pehmeät ja pyöreät muodot luovat lähestyttävän, ystävällisen ja modernin ilmeen. Tämä sopii erityisesti kuluttajapalveluihin ja luoviin aloihin. ';
+            } else if (results.sharpness.value >= 5 && results.softness.value >= 5) {
+                detailedAnalysis += 'Terävät kulmat ja geometriset muodot viestivät tarkkuudesta, ammattimaisuudesta ja tehokuudesta. Sopii teknologia- ja rahoitusaloille. ';
+            } else {
+                detailedAnalysis += 'Tasapainoinen yhdistelmä pyöreitä ja kulmikkaita muotoja luo monipuolisen ja sopeutuskykyisen visuaalisen identiteetin. ';
+            }
+
+            detailedAnalysis += '</p></div>';
+
+            // Style and era
+            detailedAnalysis += '<div class="section">';
+            detailedAnalysis += '<div class="section-title">Tyyli ja ilmaisu</div>';
+            detailedAnalysis += '<p>';
+
+            if (results.style.value <= 3) {
+                detailedAnalysis += 'Klassinen lähestymistapa painottaa ajattomuutta ja kestävyyttä. Serif-fontit, perinteiset asettelut ja hillityt värit luovat luottamusta ja arvovaltaa. ';
+            } else if (results.style.value >= 5) {
+                detailedAnalysis += 'Moderni tyyli hyödyntää rohkeita valintoja, asymmetriaa ja uusimpia designtrendejä. Sans-serif -fontit ja dynaamiset asettelut luovat tuoretta ja innovatiivista ilmettä. ';
+            } else {
+                detailedAnalysis += 'Ajaton tyyli yhdistää klassisen ja modernin parhaat puolet. Tämä lähestymistapa säilyy ajankohtaisena vuosien saatossa. ';
+            }
+
+            if (results.complexity.value <= 3) {
+                detailedAnalysis += 'Minimalistinen ilme (paljon tyhjää tilaa, vähän elementtejä) keskittyy olennaiseen ja luo selkeän, raikkaan vaikutelman. ';
+            } else if (results.complexity.value >= 5) {
+                detailedAnalysis += 'Yksityiskohtainen ja kerrostunut ilme (paljon informaatiota, visuaalisia elementtejä) luo rikkaan ja kattavan kokemuksen. ';
+            } else {
+                detailedAnalysis += 'Tasapainoinen määrä yksityiskohtia ja tyhjää tilaa luo selkeän mutta mielenkiintoisen visuaalisen hierarkian. ';
+            }
+
+            detailedAnalysis += '</p></div>';
+
+            // Personality and communication
+            detailedAnalysis += '<div class="section">';
+            detailedAnalysis += '<div class="section-title">Persoonallisuus ja viestintä</div>';
+            detailedAnalysis += '<p>';
+
+            if (results.tone.value <= 3) {
+                detailedAnalysis += 'Leikkisä ja rento sävy mahdollistaa luovan ja persoonallisen viestinnän. Brändisi voi käyttää huumoria, emojeita ja epämuodollista kieltä. ';
+            } else if (results.tone.value >= 5) {
+                detailedAnalysis += 'Vakava ja ammattimainen sävy rakentaa auktoriteettia ja luotettavuutta. Viestintä on selkeää, faktapohjaista ja harkittua. ';
+            } else {
+                detailedAnalysis += 'Ammattimainen mutta lähestyttävä sävy luo tasapainon asiantuntijuuden ja inhimillisyyden välille. ';
+            }
+
+            if (results.energy.value <= 3) {
+                detailedAnalysis += 'Rauhallinen energia sopii hyvinvointiin, luksukseen ja harkittuihin päätöksiin. Käytä paljon tyhjää tilaa ja hidasta animaatiota. ';
+            } else if (results.energy.value >= 5) {
+                detailedAnalysis += 'Dynaaminen energia sopii urheiluun, teknologiaan ja nuorekkaisiin brändeihin. Hyödynnä liikettä, kontrasteja ja nopeita siirtymiä. ';
+            } else {
+                detailedAnalysis += 'Tasapainoinen energiataso on monipuolinen ja sopii useimpiin toimialoihin. ';
+            }
+
+            if (results.approachability.value <= 3) {
+                detailedAnalysis += 'Helposti lähestyttävä brändi on avoin kaikille. Käytä selkeää kieltä, helppoa navigointia ja kutsuvaa viestintää. ';
+            } else if (results.approachability.value >= 5) {
+                detailedAnalysis += 'Eksklusiivinen brändi rakentaa erityisyyttä ja arvoa. Voit käyttää ammattikieltä ja luoda "sisäpiirin" tunnelmaa. ';
+            } else {
+                detailedAnalysis += 'Saavutettava mutta laadukas brändi on helposti ymmärrettävä mutta säilyttää professionaalisen imagonsa. ';
+            }
+
+            detailedAnalysis += '</p></div>';
+
+            // Recommendations
+            detailedAnalysis += '<div class="recommendations">';
+            detailedAnalysis += '<h4>Suositukset visuaaliseen identiteettiin:</h4>';
+            detailedAnalysis += '<ul>';
+
+            // Font recommendations
+            if (results.style.value <= 3) {
+                detailedAnalysis += '<li><strong>Fontit:</strong> Serif-fontit kuten Georgia, Garamond tai Baskerville</li>';
+            } else if (results.style.value >= 5) {
+                detailedAnalysis += '<li><strong>Fontit:</strong> Modernit sans-serif -fontit kuten Helvetica, Montserrat tai Inter</li>';
+            } else {
+                detailedAnalysis += '<li><strong>Fontit:</strong> Neutraalit sans-serif -fontit kuten Open Sans, Roboto tai Lato</li>';
+            }
+
+            // Color recommendations
+            if (results.colors.value <= 3) {
+                detailedAnalysis += '<li><strong>Värit:</strong> Hillitty paletti 2-3 pääväriä, paljon harmaita ja neutraaleja sävyjä</li>';
+            } else if (results.colors.value >= 5) {
+                detailedAnalysis += '<li><strong>Värit:</strong> Rohkea paletti kirkkailla aksenttiväreillä ja vahvoilla kontrasteilla</li>';
+            } else {
+                detailedAnalysis += '<li><strong>Värit:</strong> Tasapainoinen paletti 3-4 hyvin yhteensopivaa väriä</li>';
+            }
+
+            // Layout recommendations
+            if (results.complexity.value <= 3) {
+                detailedAnalysis += '<li><strong>Asettelu:</strong> Runsaasti tyhjää tilaa, yksi pääfokus kerrallaan, yksinkertaiset gridit</li>';
+            } else if (results.complexity.value >= 5) {
+                detailedAnalysis += '<li><strong>Asettelu:</strong> Monikerroksiset layout:t, useita informaatiopisteitä, rikkaat visuaalit</li>';
+            } else {
+                detailedAnalysis += '<li><strong>Asettelu:</strong> Selkeä hierarkia kohtuullisella määrällä elementtejä per sivu</li>';
+            }
+
+            // Image style
+            if (results.tone.value <= 3 && results.energy.value >= 4) {
+                detailedAnalysis += '<li><strong>Kuvat:</strong> Dynaamiset, energiset kuvat ihmisistä toiminnassa</li>';
+            } else if (results.tone.value >= 5) {
+                detailedAnalysis += '<li><strong>Kuvat:</strong> Ammattimaiset tuotekuvat ja studiolaatuiset kuvat</li>';
+            } else {
+                detailedAnalysis += '<li><strong>Kuvat:</strong> Aidot ja samaistuttavat kuvat, jotka heijastavat kohderyhmääsi</li>';
+            }
+
+            // Animation
+            if (results.energy.value <= 3) {
+                detailedAnalysis += '<li><strong>Animaatiot:</strong> Hienovaraiset fade-efektit ja hitaat siirtymät</li>';
+            } else if (results.energy.value >= 5) {
+                detailedAnalysis += '<li><strong>Animaatiot:</strong> Dynaamisia liikkeitä, parallax-efektejä ja interaktiivisia elementtejä</li>';
+            } else {
+                detailedAnalysis += '<li><strong>Animaatiot:</strong> Kohtuulliset hover-efektit ja smooth scroll -siirtymät</li>';
+            }
+
+            detailedAnalysis += '</ul></div>';
+
+            summaryDiv.innerHTML = summary + detailedAnalysis;
+
+            // Show results without scrolling
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
