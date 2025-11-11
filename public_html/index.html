@@ -42,45 +42,57 @@
 
         .intro {
             color: #00cc00;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             line-height: 1.6;
             transition: all 0.5s ease;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.03em;
+            font-size: 0.95rem;
         }
 
         .question {
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .question-title {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #00ff00;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             font-weight: 600;
             transition: all 0.5s ease;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.05em;
+            word-wrap: break-word;
         }
 
         .slider-container {
             position: relative;
-            padding: 0 1rem;
+            padding: 0 0.5rem;
         }
 
         .slider-labels {
             display: flex;
             justify-content: space-between;
             margin-bottom: 1rem;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
+            gap: 0.5rem;
+        }
+
+        .slider-labels span {
+            flex: 1;
+            word-wrap: break-word;
+            hyphens: auto;
+            overflow-wrap: break-word;
         }
 
         .slider-labels span:first-child {
             color: #00ff00;
             font-weight: 600;
+            text-align: left;
         }
 
         .slider-labels span:last-child {
             color: #00ff00;
             font-weight: 600;
+            text-align: right;
         }
 
         input[type="range"] {
@@ -193,7 +205,7 @@
 
         .summary {
             background: transparent;
-            padding: 2rem 0;
+            padding: 1.5rem 0;
             border-radius: 0;
             margin-top: 2rem;
             border: none;
@@ -203,23 +215,26 @@
         .summary h3 {
             color: #00ff00;
             margin-bottom: 1rem;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             text-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .copy-button {
             background: #00ff00;
             color: #1a1a1a;
             border: none;
-            padding: 0.5rem 1.5rem;
+            padding: 0.4rem 1rem;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+            white-space: nowrap;
         }
 
         .copy-button:hover {
@@ -256,12 +271,12 @@
             font-weight: 600;
             color: #00ff00;
             margin-bottom: 0.5rem;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .preview-section {
-            margin-top: 3rem;
-            padding: 2rem 0;
+            margin-top: 2rem;
+            padding: 1.5rem 0;
             background: transparent;
             border-radius: 0;
             border: none;
@@ -271,23 +286,23 @@
         .preview-section h2 {
             color: #00ff00;
             margin-bottom: 1rem;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             text-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
         }
 
         .preview-description {
             color: #00cc00;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
         }
 
         .preview-container {
             background: transparent;
-            padding: 3rem 0;
+            padding: 2rem 0;
             border-radius: 20px;
             box-shadow: none;
             transition: all 0.5s ease;
-            min-height: 400px;
+            min-height: 300px;
             border: none;
         }
 
@@ -297,48 +312,53 @@
         }
 
         .preview-title {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             margin-bottom: 0.5rem;
             transition: all 0.5s ease;
+            word-wrap: break-word;
         }
 
         .preview-subtitle {
-            font-size: 1.1rem;
+            font-size: 1rem;
             opacity: 0.8;
             transition: all 0.5s ease;
+            word-wrap: break-word;
         }
 
         .preview-content {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .preview-card {
-            padding: 1.5rem;
+            padding: 1rem;
             margin-bottom: 1rem;
             border: 2px solid #e2e8f0;
             transition: all 0.5s ease;
         }
 
         .preview-card-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             margin-bottom: 0.5rem;
             font-weight: 600;
             transition: all 0.5s ease;
+            word-wrap: break-word;
         }
 
         .preview-card-text {
             line-height: 1.6;
             transition: all 0.5s ease;
+            font-size: 0.95rem;
+            word-wrap: break-word;
         }
 
         .preview-button {
             display: inline-block;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem;
             background: #667eea;
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             transition: all 0.3s ease;
         }
@@ -386,7 +406,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Brändin<br>persoonallisuustesti</h1>
+        <h1>Brändin<br>persoonallisuus&shy;testi</h1>
         <p class="intro">
             Liikuta liukusäätimiä määrittääksesi brändisi persoonallisuus. 
             Vastaa intuitiivisesti - ensimmäinen tunne on usein oikea!
@@ -481,8 +501,8 @@
                 <div class="question-title">8. Visuaalinen monimutkaisuus</div>
                 <div class="slider-container">
                     <div class="slider-labels">
-                        <span>Minimalistinen</span>
-                        <span>Yksityiskohtainen</span>
+                        <span>Minimalis&shy;tinen</span>
+                        <span>Yksityis&shy;kohtainen</span>
                     </div>
                     <input type="range" id="complexity" min="1" max="7" value="4">
                     <div class="value-indicator" id="complex-value">Selkeä</div>
